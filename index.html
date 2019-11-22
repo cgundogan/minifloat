@@ -54,8 +54,16 @@
           name: "(0,4,4,0)",
           type: 'scatter'
       };
+      var c0350 = {
+          x: range,
+          y: range.map(a => {
+              return minifloat(a,3,5);
+          }),
+          name: "(0,3,5,0)",
+          type: 'scatter'
+      };
 
-      var data = [c0620, c0530, c0440];
+      var data = [c0620, c0530, c0440, c0350];
 
       var updatemenus=[
           {
