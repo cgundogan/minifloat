@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Minifloat Comparison</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  </head>
+  <body style="height: 100vh; overflow-y: hidden">
+    <p>$$ { (1 + \frac{a}{a_{max}}) \times 2^b } $$</p>
+    <div id="myDiv" style="height:100%"></div>
+    <script>
+      function minifloat(x, expbits, manbits) {
+          var mans = (1 << manbits);
+          var man = x & (mans - 1);
+          var exp = (x & ((1 << expbits) - 1) << manbits) >> manbits;
+          var res = (1 + man/mans) * (2**exp);
+          xb = x.toString(2);
+          xbstr = ("00000000".substr(xb.length) + xb)
+          // console.log("x: " + x + ", xb: " + xbstr + ", man: " + man + ", exp: " + exp + ", res: " + res);
+          return res;
+      }
+
+      minifloat(255,5,3);
+
+      var range = [...Array(256).keys()];
+
+      var output = range.map(a => {
+          return minifloat(a,5,3);
+      });
+
+      var c0620 = {
+          x: range,
+          y: range.map(a => {
+              return minifloat(a,6,2);
+          }),
+          name: "(0,6,2,0)",
+          type: 'scatter'
+      };
+      var c0530 = {
+          x: range,
+          y: range.map(a => {
+              return minifloat(a,5,3);
+          }),
+          name: "(0,5,3,0)",
+          type: 'scatter'
+      };
+      var c0440 = {
+          x: range,
+          y: range.map(a => {
+              return minifloat(a,4,4);
+          }),
+          name: "(0,4,4,0)",
+          type: 'scatter'
+      };
+
+      var data = [c0620, c0530, c0440];
+
+      var updatemenus=[
+          {
+              buttons: [
+                  {
+                      args: ['yaxis.type', 'linear'],
+                      label: 'Y-Linear',
+                      method: 'relayout'
+                  },
+                  {
+                      args: ['yaxis.type', 'log'],
+                      label:'Y-Logarithmic',
+                      method:'relayout'
+                  }
+              ],
+              direction: 'left',
+              pad: {'r': 10, 't': 10},
+              showactive: true,
+              type: 'buttons',
+              x: 0.1,
+              xanchor: 'left',
+              y: 1.1,
+              yanchor: 'top'
+          }
+      ]
+
+      var layout = {
+          title: '',
+          font: {size: 18},
+          autosize: true,
+          updatemenus: updatemenus,
+          yaxis: {
+              type: 'linear',
+              autorange: true,
+              exponentformat: 'none',
+              automargin: true,
+          },
+      };
+
+      Plotly.newPlot('myDiv', data, layout, {responsive: true});
+    </script>
+  </body>
+</html>
