@@ -8,7 +8,7 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </head>
   <body style="height: 100vh; overflow-y: hidden">
-    <p>$$ t_{seconds}(s,e,m,b) = \begin{cases}(-1)^s \times (0 + \frac{m}{m_{max}}) \times 2^{0-b+1} & \text{if} \ e = 0 \text{ (subnormal)}\\ (-1)^s \times (1 + \frac{m}{m_{max}}) \times 2^{e-b} & \text{if} \ e > 0 \text{ (normalized)}\end{cases} \qquad where \quad s:=sign \quad e:=exponent \quad m:=mantissa \quad b:=bias $$</p>
+    <p>$$ t_{seconds}(s,e,m,b) = \begin{cases}(-1)^s \times (0 + \frac{m}{m_{max}}) \times 2^{0+b+1} & \text{if} \ e = 0 \text{ (subnormal)}\\ (-1)^s \times (1 + \frac{m}{m_{max}}) \times 2^{e+b} & \text{if} \ e > 0 \text{ (normalized)}\end{cases} \qquad where \quad s:=sign \quad e:=exponent \quad m:=mantissa \quad b:=bias $$</p>
     <div id="myDiv" style="height:90%"></div>
     <script>
       function minifloat(x, expbits, manbits) {
