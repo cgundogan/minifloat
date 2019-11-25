@@ -11,16 +11,16 @@
     <p>$$ t_{seconds}(s,e,m,b) = \begin{cases}(-1)^s \times (0 + \frac{m}{m_{max}}) \times 2^{0+b+1} & \text{if} \ e = 0 \text{ (subnormal)}\\ (-1)^s \times (1 + \frac{m}{m_{max}}) \times 2^{e+b} & \text{if} \ e > 0 \text{ (normalized)}\end{cases} \qquad where \quad s:=sign \quad e:=exponent \quad m:=mantissa \quad b:=bias $$</p>
     <div id="myDiv" style="height:90%"></div>
     <script>
-      function minifloat(x, expbits, manbits) {
+      function minifloat(x, expbits, manbits, b) {
           var mans = (1 << manbits);
           var man = x & (mans - 1);
           var exp = (x & ((1 << expbits) - 1) << manbits) >> manbits;
           var res = 0;
           if (exp == 0) {
-              res = (0 + man/mans) * 2**1;
+              res = (0 + man/mans) * 2**(b+1);
           }
           else {
-              res = (1 + man/mans) * (2**exp);
+              res = (1 + man/mans) * (2**(exp+b));
           }
           xb = x.toString(2);
           xbstr = ("00000000".substr(xb.length) + xb)
@@ -31,10 +31,6 @@
       minifloat(255,5,3);
 
       var range = [...Array(256).keys()];
-
-      var output = range.map(a => {
-          return minifloat(a,5,3);
-      });
 
 /*
       var c0620 = {
@@ -49,15 +45,23 @@
       var c0530 = {
           x: range,
           y: range.map(a => {
-              return minifloat(a,5,3);
+              return minifloat(a,5,3,0);
           }),
           name: "(0,5,3,0)",
+          type: 'scatter'
+      };
+      var c053m7 = {
+          x: range,
+          y: range.map(a => {
+              return minifloat(a,5,3,-7);
+          }),
+          name: "(0,5,3,-7)",
           type: 'scatter'
       };
       var c0440 = {
           x: range,
           y: range.map(a => {
-              return minifloat(a,4,4);
+              return minifloat(a,4,4,0);
           }),
           name: "(0,4,4,0)",
           type: 'scatter'
@@ -73,7 +77,7 @@
       };
 */
 //      var data = [c0620, c0530, c0440, c0350];
-        var data = [c0530, c0440];
+      var data = [c0530, c053m7, c0440];
 
       var updatemenus=[
           {
