@@ -8,14 +8,20 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </head>
   <body style="height: 100vh; overflow-y: hidden">
-    <p>$$ { (1 + \frac{m}{m_{max}}) \times 2^e }, \quad where \quad m:=mantissa \quad e:=exponent$$</p>
+    <p>$$ t_{seconds}(s,e,m,b) = \begin{cases}(-1)^s \times (0 + \frac{m}{m_{max}}) \times 2^{0-b+1} & \text{if} \ e = 0 \text{ (subnormal)}\\ (-1)^s \times (1 + \frac{m}{m_{max}}) \times 2^{e-b} & \text{if} \ e > 0 \text{ (normalized)}\end{cases} \qquad where \quad s:=sign \quad e:=exponent \quad m:=mantissa \quad b:=bias $$</p>
     <div id="myDiv" style="height:90%"></div>
     <script>
       function minifloat(x, expbits, manbits) {
           var mans = (1 << manbits);
           var man = x & (mans - 1);
           var exp = (x & ((1 << expbits) - 1) << manbits) >> manbits;
-          var res = (1 + man/mans) * (2**exp);
+          var res = 0;
+          if (exp == 0) {
+              res = (0 + man/mans) * 2**1;
+          }
+          else {
+              res = (1 + man/mans) * (2**exp);
+          }
           xb = x.toString(2);
           xbstr = ("00000000".substr(xb.length) + xb)
           // console.log("x: " + x + ", xb: " + xbstr + ", man: " + man + ", exp: " + exp + ", res: " + res);
@@ -30,6 +36,7 @@
           return minifloat(a,5,3);
       });
 
+/*
       var c0620 = {
           x: range,
           y: range.map(a => {
@@ -38,6 +45,7 @@
           name: "(0,6,2,0)",
           type: 'scatter'
       };
+*/
       var c0530 = {
           x: range,
           y: range.map(a => {
@@ -54,6 +62,7 @@
           name: "(0,4,4,0)",
           type: 'scatter'
       };
+/*
       var c0350 = {
           x: range,
           y: range.map(a => {
@@ -62,8 +71,9 @@
           name: "(0,3,5,0)",
           type: 'scatter'
       };
-
-      var data = [c0620, c0530, c0440, c0350];
+*/
+//      var data = [c0620, c0530, c0440, c0350];
+        var data = [c0530, c0440];
 
       var updatemenus=[
           {
