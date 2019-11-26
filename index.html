@@ -11,10 +11,14 @@
     <p>$$ t_{seconds}(s,e,m,b) = \begin{cases}(-1)^s \times (0 + \frac{m}{m_{max}}) \times 2^{0+b+1} & \text{if} \ e = 0 \text{ (subnormal)}\\ (-1)^s \times (1 + \frac{m}{m_{max}}) \times 2^{e+b} & \text{if} \ e > 0 \text{ (normalized)}\end{cases} \qquad where \quad s:=sign \quad e:=exponent \quad m:=mantissa \quad b:=bias $$</p>
     <div id="myDiv" style="height:90%"></div>
     <script>
-      function minifloat(x, sign, expbits, manbits, b) {
+      function minifloat(x, signbits, expbits, manbits, b) {
           var mans = (1 << manbits);
           var man = x & (mans - 1);
           var exp = (x & ((1 << expbits) - 1) << manbits) >> manbits;
+          var sign = 0;
+          if (signbits) {
+              sign = x & (1 << (expbits + manbits)) ? 1 : 0;
+          }
           var res = 0;
           if (exp == 0) {
               res = (-1)**sign * (0 + man/mans) * 2**(b+1);
@@ -25,83 +29,75 @@
           return res;
       }
 
-      var range = [...Array(256).keys()];
+      var range8 = [...Array(2**8 - 1).keys()];
+      var range16 = [...Array(2**16 -1).keys()];
 
       var c0530 = {
-          x: range,
-          y: range.map(a => {
+          x: range8,
+          y: range8.map(a => {
               return minifloat(a,0,5,3,0);
           }),
           name: "(0,5,3,0)",
           type: 'scatter'
       };
       var c053m7 = {
-          x: range,
-          y: range.map(a => {
+          x: range8,
+          y: range8.map(a => {
               return minifloat(a,0,5,3,-7);
           }),
           name: "(0,5,3,-7)",
           type: 'scatter'
       };
       var c053m6 = {
-          x: range,
-          y: range.map(a => {
+          x: range8,
+          y: range8.map(a => {
               return minifloat(a,0,5,3,-6);
           }),
           name: "(0,5,3,-6)",
           type: 'scatter'
       };
       var c053m5 = {
-          x: range,
-          y: range.map(a => {
+          x: range8,
+          y: range8.map(a => {
               return minifloat(a,0,5,3,-5);
           }),
           name: "(0,5,3,-5)",
           type: 'scatter'
       };
       var c0440 = {
-          x: range,
-          y: range.map(a => {
+          x: range8,
+          y: range8.map(a => {
               return minifloat(a,0,4,4,0);
           }),
           name: "(0,4,4,0)",
           type: 'scatter'
       };
-      var data = [c0530, c053m5, c053m6, c053m7, c0440];
-
-      var updatemenus=[
-          {
-              buttons: [
-                  {
-                      args: ['yaxis.type', 'linear'],
-                      label: 'Y-Linear',
-                      method: 'relayout'
-                  },
-                  {
-                      args: ['yaxis.type', 'log'],
-                      label:'Y-Logarithmic',
-                      method:'relayout'
-                  }
-              ],
-              direction: 'left',
-              pad: {'r': 10, 't': 10},
-              showactive: true,
-              type: 'buttons',
-              x: 0.1,
-              xanchor: 'left',
-              y: 1.1,
-              yanchor: 'top'
-          }
-      ]
+      var c_1_5_10_m12 = {
+          x: range16,
+          y: range16.map(a => {
+              return minifloat(a,1,5,10,-12);
+          }),
+          xaxis: 'x2',
+          yaxis: 'y2',
+          name: "(1,5,10,-12)",
+          type: 'scatter'
+      };
+      var data = [c0530, c053m5, c053m6, c053m7, c0440, c_1_5_10_m12];
 
       var layout = {
           title: '',
           font: {size: 18},
           autosize: true,
-          updatemenus: updatemenus,
           xaxis: {
               type: 'linear',
               title: '8-bit time code',
+              autorange: true,
+              exponentformat: 'none',
+              automargin: true,
+          },
+          xaxis2: {
+              type: 'linear',
+              title: '16-bit time code',
               autorange: true,
               exponentformat: 'none',
               automargin: true,
@@ -112,6 +108,18 @@
               autorange: true,
               exponentformat: 'none',
               automargin: true,
+          },
+          yaxis2: {
+              type: 'linear',
+              title: 'time value',
+              autorange: true,
+              exponentformat: 'none',
+              automargin: true,
+          },
+          grid: {
+              rows: 1,
+              columns: 2,
+              pattern: 'independent',
           },
       };
 
