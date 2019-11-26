@@ -31,10 +31,10 @@
 
       function sec2text(r) {
           var suffix = '';
-          suffix += Math.floor(r / (60 * 60 * 24 * 365)) + 'y ';
-          suffix += Math.floor(r / (60 * 60 * 24) % 365) + 'd ';
-          suffix += Math.floor(r / (60 * 60) % 24) + 'h ';
-          suffix += Math.floor(r / 60 % 60) + 'm ';
+          suffix += ((r / (60 * 60 * 24 * 365)) | 0) + 'y ';
+          suffix += ((r / (60 * 60 * 24) % 365) | 0) + 'd ';
+          suffix += ((r / (60 * 60) % 24) | 0) + 'h ';
+          suffix += ((r / 60 % 60) | 0) + 'm ';
           suffix += r % 60 + 's';
           return r + ' (' + suffix + ')';
       }
