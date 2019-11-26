@@ -29,58 +29,74 @@
           return res;
       }
 
-      var range8 = [...Array(2**8 - 1).keys()];
-      var range16 = [...Array(2**16 -1).keys()];
+      function sec2text(r) {
+          var suffix = '';
+          suffix += Math.floor(r / (60 * 60 * 24 * 365)) + 'y ';
+          suffix += Math.floor(r / (60 * 60 * 24) % 365) + 'd ';
+          suffix += Math.floor(r / (60 * 60) % 24) + 'h ';
+          suffix += Math.floor(r / 60 % 60) + 'm ';
+          suffix += r % 60 + 's';
+          return r + ' (' + suffix + ')';
+      }
+
+      var range8 = [...Array(2**8).keys()];
+      var range16 = [...Array(2**16).keys()];
+      var range8c0530 = range8.map(a => { return minifloat(a,0,5,3,0); });
+      var range8c053m7 = range8.map(a => { return minifloat(a,0,5,3,-7); });
+      var range8c053m6 = range8.map(a => { return minifloat(a,0,5,3,-6); });
+      var range8c053m5 = range8.map(a => { return minifloat(a,0,5,3,-5); });
+      var range8c0440 = range8.map(a => { return minifloat(a,0,4,4,0); });
+      var range16c_1_5_10_m12 = range16.map(a => { return minifloat(a,1,5,10,-12); });
 
       var c0530 = {
           x: range8,
-          y: range8.map(a => {
-              return minifloat(a,0,5,3,0);
-          }),
+          y: range8c0530,
           name: "(0,5,3,0)",
-          type: 'scatter'
+          type: 'scatter',
+          text: range8c0530.map(sec2text),
+          hoverinfo: 'text'
       };
       var c053m7 = {
           x: range8,
-          y: range8.map(a => {
-              return minifloat(a,0,5,3,-7);
-          }),
+          y: range8c053m7,
           name: "(0,5,3,-7)",
-          type: 'scatter'
+          type: 'scatter',
+          text: range8c053m7.map(sec2text),
+          hoverinfo: 'text'
       };
       var c053m6 = {
           x: range8,
-          y: range8.map(a => {
-              return minifloat(a,0,5,3,-6);
-          }),
+          y: range8c053m6,
           name: "(0,5,3,-6)",
-          type: 'scatter'
+          type: 'scatter',
+          text: range8c053m6.map(sec2text),
+          hoverinfo: 'text'
       };
       var c053m5 = {
           x: range8,
-          y: range8.map(a => {
-              return minifloat(a,0,5,3,-5);
-          }),
+          y: range8c053m5,
           name: "(0,5,3,-5)",
-          type: 'scatter'
+          type: 'scatter',
+          text: range8c053m5.map(sec2text),
+          hoverinfo: 'text'
       };
       var c0440 = {
           x: range8,
-          y: range8.map(a => {
-              return minifloat(a,0,4,4,0);
-          }),
+          y: range8c0440,
           name: "(0,4,4,0)",
-          type: 'scatter'
+          type: 'scatter',
+          text: range8c0440.map(sec2text),
+          hoverinfo: 'text'
       };
       var c_1_5_10_m12 = {
           x: range16,
-          y: range16.map(a => {
-              return minifloat(a,1,5,10,-12);
-          }),
+          y: range16c_1_5_10_m12,
           xaxis: 'x2',
           yaxis: 'y2',
           name: "(1,5,10,-12)",
-          type: 'scatter'
+          type: 'scatter',
+          text: range16c_1_5_10_m12.map(sec2text),
+          hoverinfo: 'text'
       };
       var data = [c0530, c053m5, c053m6, c053m7, c0440, c_1_5_10_m12];
 
