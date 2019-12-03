@@ -46,6 +46,7 @@
       var range8c053m6 = range8.map(a => { return minifloat(a,0,5,3,-6); });
       var range8c053m5 = range8.map(a => { return minifloat(a,0,5,3,-5); });
       var range8c0440 = range8.map(a => { return minifloat(a,0,4,4,0); });
+      var range16c_0_5_11_m5 = range16.map(a => { return minifloat(a,0,5,11,-5); });
       var range16c_1_5_10_m5 = range16.map(a => { return minifloat(a,1,5,10,-5); });
       var range16c_1_5_10_m12 = range16.map(a => { return minifloat(a,1,5,10,-12); });
       var range16c_1_5_10_m15 = range16.map(a => { return minifloat(a,1,5,10,-15); });
@@ -90,6 +91,16 @@
           text: range8c0440.map(sec2text),
           hoverinfo: 'text'
       };
+      var c_0_5_11_m5 = {
+          x: range16,
+          y: range16c_0_5_11_m5,
+          xaxis: 'x2',
+          yaxis: 'y2',
+          name: "(0,5,11,-5)",
+          type: 'scatter',
+          text: range16c_0_5_11_m5.map(sec2text),
+          hoverinfo: 'text'
+      };
       var c_1_5_10_m12 = {
           x: range16,
           y: range16c_1_5_10_m12,
@@ -121,7 +132,7 @@
           hoverinfo: 'text'
       };
 
-      var data = [c0440, c0530, c053m5, c053m6, c053m7, c_1_5_10_m5, c_1_5_10_m12, c_1_5_10_m15];
+      var data = [c0440, c0530, c053m5, c053m6, c053m7, c_1_5_10_m5, c_1_5_10_m12, c_1_5_10_m15, c_0_5_11_m5];
 
       var layout = {
           title: '',
